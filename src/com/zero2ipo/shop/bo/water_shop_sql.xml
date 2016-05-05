@@ -1,0 +1,174 @@
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
+		 "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap namespace="mobile.Shop">
+<typeAlias alias="Shop" type="com.zero2ipo.shop.bo.ShopBo"/>
+<resultMap class="Shop" id="ShopMap">
+	<result property="id" column="id"/>
+	<result property="name" column="name"/>
+	<result property="remark" column="remark"/>
+	<result property="status" column="status"/>
+	<result property="createTime" column="createTime"/>
+	<result property="endTime" column="endTime"/>
+	<result property="appId" column="appId"/>
+	<result property="appSecret" column="appSecret"/>
+	<result property="partenKey" column="partenKey"/>
+	<result property="partenValue" column="partenValue"/>
+	<result property="preBody" column="preBody"/>
+	<result property="mobile" column="mobile"/>
+	<result property="password" column="password"/>
+	<result property="total" column="total"/>
+</resultMap>
+
+<select id='findShopList' resultMap='ShopMap'>
+SELECT
+	id,
+	name,
+	remark,
+	status,
+	createTime,
+	endTime,
+	appId,
+	appSecret,
+	partenKey,
+	partenValue,
+	preBody,
+	mobile,
+	password,
+	total
+FROM water_Shop
+<dynamic prepend="WHERE">
+	<isNotEmpty prepend="AND" property="name">
+		name=#name#
+	</isNotEmpty>
+	<isNotEmpty prepend="AND" property="endTime">
+		end_time >=#endTime#
+	</isNotEmpty>
+	<isNotEmpty prepend="AND" property="mobile">
+		mobile =#mobile#
+	</isNotEmpty>
+	<isNotEmpty prepend="AND" property="status">
+		status =#status#
+	</isNotEmpty>
+</dynamic>
+</select>
+<select id='findShopById' resultMap='ShopMap'>
+SELECT
+	id,
+	name,
+	remark,
+	status,
+	createTime,
+	endTime,
+	appId,
+	appSecret,
+	partenKey,
+	partenValue,
+	preBody,
+	mobile,
+	password,
+	total
+FROM water_Shop
+WHERE
+id=#id#
+</select>
+	<select id='findShopByMap' resultMap='ShopMap'>
+		SELECT
+		id,
+		name,
+		remark,
+		status,
+		createTime,
+		endTime,
+		appId,
+		appSecret,
+		partenKey,
+		partenValue,
+		preBody,
+		mobile,
+		password,
+		total
+		FROM water_Shop
+		WHERE
+		mobile=#mobile#
+		and
+		password=#password#
+	</select>
+<select id='findShopListCount' resultClass='java.lang.Integer'>
+SELECT
+	count(0)
+FROM water_Shop
+<dynamic prepend="WHERE">
+		<isNotEmpty prepend="AND" property="name">
+			name=#name#
+		</isNotEmpty>
+		<isNotEmpty prepend="AND" property="endTime">
+			end_time >=#endTime#
+		</isNotEmpty>
+		<isNotEmpty prepend="AND" property="mobile">
+			mobile =#mobile#
+		</isNotEmpty>
+		<isNotEmpty prepend="AND" property="status">
+			status =#status#
+		</isNotEmpty>
+</dynamic>
+</select>
+<insert id="insertShop" parameterClass="Shop">
+	INSERT INTO water_Shop(
+	name,
+	remark,
+	status,
+	createTime,
+	endTime,
+	appId,
+	appSecret,
+	partenKey,
+	partenValue,
+	preBody,
+	mobile,
+	password,
+	total
+)VALUES(
+	#name#,
+	#remark#,
+	#status#,
+	now(),
+	#endTime#,
+	#appId#,
+	#appSecret#,
+	#partenKey#,
+	#partenValue#,
+	#preBody#,
+	#mobile#,
+	#password#,
+	#total#
+)
+</insert>
+<update id="updateShop" parameterClass="Shop">
+	UPDATE
+		water_Shop
+	SET
+	name=#name#,
+	remark=#remark#,
+	status=#status#,
+	endTime=#endTime#,
+	appId=#appId#,
+	appSecret=#appSecret#,
+	partenKey=#partenKey#,
+	partenValue=#partenValue#,
+	preBody=#preBody#,
+	mobile=#mobile#,
+	password=#password#,
+	total=#total#
+ 	WHERE
+	ID=#id#
+</update>
+<delete id="deleteShopByIds" parameterClass="java.util.Map">
+	DELETE FROM
+	water_Shop
+	WHERE
+	ID IN
+	<iterate property="id" conjunction="," close=")" open="(">
+	#id[]#
+	</iterate>
+</delete>
+</sqlMap>

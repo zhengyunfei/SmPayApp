@@ -1,0 +1,107 @@
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
+		 "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap namespace="mobile.QrCode">
+<typeAlias alias="QrCodeBo" type="com.zero2ipo.qrCode.bo.QrCodeBo"/>
+<resultMap class="QrCodeBo" id="QrCodeBoMap">
+	<result property="id" column="id"/>
+	<result property="name" column="name"/>
+	<result property="money" column="money"/>
+	<result property="createTime" column="createTime"/>
+	<result property="status" column="status"/>
+	<result property="shopId" column="shopId"/>
+	<result property="qrCodeImage" column="qrCodeImage"/>
+</resultMap>
+<!--查询-->
+
+<select id='findQrCodeList' resultMap='QrCodeBoMap'>
+SELECT
+	id,
+	name,
+	money,
+	createTime,
+	status,
+	shopId,
+	qrCodeImage
+FROM shop_qrcode
+<dynamic prepend="WHERE">
+<isNotEmpty prepend="AND" property="shopId">
+	shopId=#shopId#
+</isNotEmpty>
+</dynamic>
+order by createTime DESC
+limit #start#,#end#
+</select>
+	<select id='findQrCodeListCount' resultClass='java.lang.Integer'>
+		SELECT
+			count(0)
+		FROM shop_qrcode
+		<dynamic prepend="WHERE">
+			<isNotEmpty prepend="AND" property="shopId">
+				shopId=#shopId#
+			</isNotEmpty>
+		</dynamic>
+	</select>
+	<select id='findQrCodeById' resultMap='QrCodeBoMap'>
+		SELECT
+		id,
+		name,
+		money,
+		createTime,
+		status,
+		shopId,
+		qrCodeImage
+		FROM shop_qrcode
+		where id=#id#
+	</select>
+
+<!--新增-->
+<insert id="addQrCode" parameterClass="QrCodeBo">
+	INSERT INTO shop_qrcode(
+	id,
+	name,
+	money,
+	createTime,
+	status,
+	shopId,
+	qrCodeImage
+)VALUES(
+	#id#,
+	#name#,
+	#money#,
+	now(),
+	#status#,
+	#shopId#,
+	#qrCodeImage#
+)
+	<selectKey resultClass="String" keyProperty="id" >
+		SELECT @@IDENTITY AS id
+	</selectKey>
+</insert>
+<!--修改-->
+<update id="updQrCodeImage" parameterClass="QrCodeBo">
+	UPDATE
+		shop_qrcode
+	SET
+		qrCodeImage=#qrCodeImage#
+ 	WHERE
+	ID=#id#
+</update>
+	<update id="updQrCode" parameterClass="QrCodeBo">
+		UPDATE
+		shop_qrcode
+		SET
+		status=#status#
+		WHERE
+		ID=#id#
+	</update>
+<!--删除-->
+<delete id="delQrCode" parameterClass="java.util.Map">
+	DELETE FROM
+		shop_qrcode
+	WHERE
+	ID IN
+	<iterate property="id" conjunction="," close=")" open="(">
+	#id[]#
+	</iterate>
+</delete>
+</sqlMap>

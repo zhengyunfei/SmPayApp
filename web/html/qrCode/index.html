@@ -1,0 +1,157 @@
+<html>
+<head>
+    <title id="js-meta-title">扫码支付收银台</title>
+    [#include "common.html"]
+    <script>
+        function autoewm(id){
+            $("#qrCode").empty();
+        }
+        $(function(){
+            $("#createQrcodeBtn").bind('click',function(){
+                var name=$("#name").val();
+                var money=$("#money").val();
+                if(''==name||null==name){
+                    alert("名称不能为空");
+                    return false;
+                }
+                if(''==money||null==money){
+                    alert("金额不能为空");
+                    return false;
+                }
+                $("#showMoney").html(money);
+                //先将录入的商品信息保存到数据库中，之后再生成二维码
+                saveQrCodeToDataBase(name,money);
+
+            });
+        });
+        /**
+         * 保存商品到数据库中，此时没有二维码图片
+         * @param name
+         * @param money
+         */
+        function saveQrCodeToDataBase(name,money){
+            var url="${base}/qrCode/add.html";
+            var data={"name":name,"money":money};
+            $.ajax({
+                url:url,
+                type:'post',
+                data:data,
+                dataType:'json',
+                beforeSend:function(){
+                    //alert("保存前");
+                },success:function(res){
+                    //保存成功之后，返回id,根据id生成二维码
+                    var id=res.id;
+                    var image=res.image;
+                    //将二维码显示到图片所在区域
+                    $("#gdImg").attr("src",image);
+                    $("#qrCode").append('<img src="'+image+'"  />');
+                    $(".js-down-code").attr('href',image);
+
+                },error:function(){
+                    alert("保存失败");
+                }
+            })
+        }
+
+    </script>
+</head>
+
+<body class="theme theme--blue">
+<!-- ▼ Main header -->
+[#include "head.html"]
+<!--head end-->
+<div class="container">
+    <div class="app">
+        <div class="app-inner clearfix">
+            <div class="app-init-container">
+                <nav class="ui-nav clearfix">
+                    <ul class="pull-left">
+                        <li id="js-cashier-init" class="active">
+                            <a href="${base}/qrCode/index.html">收银台</a>
+                        </li>
+                        <li id="js-cashier-qrcode">
+                            <a href="${base}/qrCode/list.html">二维码生成记录</a>
+                        </li>
+                        <li id="js-cashier-payment" class="">
+                            <a href="${base}/qrCode/cashier.html">收款记录</a>
+                        </li>
+                    </ul>
+                </nav>
+                <!--主体 start-->
+                <div class="app__content js-app-main page-cashier"><div><div class="page-cashier-box">
+                    <div class="cashier-desk clearfix">
+                        <!-- 实时收款二维码 -->
+                        <div class="realtime-pay js-pay-code-region clearfix"><div><div class="pay-config">
+                            <h2 class="pay-title">指定收款金额</h2>
+                            <form class="form-horizontal">
+                                <div class="control-group config-title">
+                                    <div class="controls">
+                                        <input type="text" id="name" name="name" class="js-cashier-name js-input" value="" placeholder="请输入收款理由">
+                                        <span class="clear-btn js-clear" data-mark="name"></span>
+                                    </div>
+                                </div>
+                                <div class="control-group config-amount">
+                                    <div class="controls">
+                                        <input type="text" name="name" id="money" class="js-cashier-value js-input" value=""  placeholder="输入金额(元)">
+                                        <a href="javascript:void(0)" class="btn btn-primary js-create-qrcode" id="createQrcodeBtn" data-loading-text="生成中...">生成二维码</a>
+                                    </div>
+                                </div>
+                                <p class="gray tips fixed-tips"></p>
+                            </form>
+                        </div>
+                            <div class="pay-code">
+                                <!-- 显示屏、打印机在不支持（start） -->
+                                <div class="controls" style="height:25px">
+                                    <div style="display:none;">
+                                        <label class="radio inline">
+                                            <input name="config" type="checkbox" value="screen">
+                                            <span class="label-text">显示屏</span>
+                                        </label>
+                                        <label class="radio inline">
+                                            <input name="config" type="checkbox" value="print">
+                                            <span class="label-text">打印机</span>
+                                        </label>
+                                    </div>
+                                </div>
+                                <!-- 显示屏、打印机在不支持（end） -->
+                                <div class="qr-code-zone gray" id="qrCode">
+                                    二维码区域
+                                </div>
+                                <p class="gray tips">收款: &nbsp;<span id="showMoney"></span>&nbsp; 元</p>
+
+                                <div class="cashier-reduce-info tips">
+                                   <!-- <i class="status ui-tooltip" data-tooltip-title="通过收银台优惠，创建您想设置的优惠金额" data-tooltip-placement="right">!</i>未设置优惠-->
+                                </div>
+
+                                <p class="tips">
+                                    <a href="" class="js-down-code">下载二维码</a>
+                                </p>
+                            </div>
+                        </div></div>
+                        <!-- 固定收款二维码 -->
+                        <div class="self-pay js-fixed-code-region"><div><h2 class="pay-title">自助付款</h2>
+                            <div class="self-pay-code">
+                                <img src="" id="gdImg">
+                            </div>
+
+                            <div class="cashier-reduce-info">
+                               <!-- <i class="status ui-tooltip" data-tooltip-title="通过收银台优惠，创建您想设置的优惠金额" data-tooltip-placement="left">!</i>未设置优惠-->
+                            </div>
+                            <!--<p class="gray tips">买家可自助输入付款金额</p>-->
+                            <p class="tips">
+                                <a href="" class="js-down-code">下载二维码</a>
+                               <!-- <span class="gray">|</span>-->
+                               <!-- <a href="javascript:void(0)" class="js-copy-fixed-link">复制链接</a>-->
+                            </p>
+                        </div></div>
+                    </div>
+            </div></div></div></div>
+  [#include "foot.html"]
+        </div>
+    </div>
+
+</div>
+<!-- ▲ Main container -->
+</body>
+</html>

@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html class="" lang="zh-cmn-Hans">
+<head>
+    <meta charset="utf-8">
+    <meta name="keywords" content="java微信开发">
+    <meta name="description" content="">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="MobileOptimized" content="320">
+    <meta name="format-detection" content="telephone=no">
+    <meta http-equiv="cleartype" content="on">
+    <meta name="referrer" content="always">
+    <link rel="shortcut icon" href="https://b.yzcdn.cn/v2/image/yz_fc.ico">
+    <title>确认交易</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <link rel="stylesheet" href="${css}/qrcode/payorder.css">
+    <script>
+        //微信支付
+        var jsParam =${jsParam!''};
+        function wxpay(){
+            WeixinJSBridge.invoke(
+                    'getBrandWCPayRequest'
+                    ,jsParam
+                    ,callback
+            );
+        }
+        function callback(res){
+            //  返回 res.err_msg,取值
+            // get_brand_wcpay_request:cancel   用户取消
+            // get_brand_wcpay_request:fail  发送失败
+            // get_brand_wcpay_request:ok 发送成功
+            //WeixinJSBridge.log(res.err_msg);
+            var status=-1;
+            if(res.err_msg=='get_brand_wcpay_request:ok')
+            {
+               alert("支付成功");
+                showTip();
+                status=1;
+                //支付成功后更新支付状态
+                ajax(status,"/pay/update");
+            }
+            else if(res.err_msg=='get_brand_wcpay_request:cancel'){
+                //用户取消 不做任何操作
+            }
+            else
+            {
+                status=0;
+                var msg='支付失败,请重新支付.';
+                alert(msg);
+
+            }
+        };
+        function ajax(status,url){
+            var id="${(qrcode.id)?default('')}";
+            var openId="${openId!''}";
+            $.ajax({
+                type:"post",
+                data:{"status":status,"id":id,"openId":openId},
+                url: url,
+                async : false,
+                success:function(data){
+                    if(status==1&&data.success){
+                        // $("#tips").html("支付状态更新成功");
+                        //showTip();
+                        //支付成功之后，跳转到此订单详情页面
+                        window.location.href="${base}/orderdetail/"+orderId+".html";
+                    }
+
+                },error:function(){
+
+                }
+            })
+        }
+
+    </script>
+</head>
+<body>
+
+<div class="container " style="min-height: 469px;">
+    <div class="content free-cash ">
+        <div class="cashier-info-container center">
+            <div class="avatar cashier-avatar">
+                <br>
+               <h2>${name!''}</h2>
+                <h3> <i class="money-text">￥</i>${money!''}</h3>
+            </div>
+        </div>
+        <hr>
+        <div style="padding-bottom: 5px;">
+            <div style="float: left">&nbsp;&nbsp;收款方</div>
+            <div style="float: right">收款方1&nbsp;&nbsp;&nbsp;&nbsp;</div>
+        </div>
+        <br>
+        <div >
+            <div style="float: left">&nbsp;&nbsp;商品</div>
+            <div style="float: right">${name!''}&nbsp;&nbsp;&nbsp;&nbsp;</div>
+        </div>
+        <br>
+        <hr>
+        <div class="action-container" id="js-cashier-action">
+            <div style="margin-bottom: 10px;width: 50%;align-content: center;margin-right: auto;margin-left: auto">
+            <button type="button" data-pay-type="wxwappay" onclick="javascript:wxpay()"  class="btn-pay btn btn-block btn-large btn-wxwappay  btn-green">
+                微信支付
+            </button>
+        </div>
+        </div>
+    </div>
+    <div>
+</div>
+</div>
+</body>
+</html>
+

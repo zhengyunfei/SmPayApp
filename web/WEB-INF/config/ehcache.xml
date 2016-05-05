@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ehcache xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:noNamespaceSchemaLocation="http://ehcache.org/ehcache.xsd"
+	updateCheck="false">
+	
+	<defaultCache  
+        maxElementsInMemory="10000"  
+        eternal="false"  
+        timeToIdleSeconds="120"  
+        timeToLiveSeconds="120"  
+		overflowToDisk="false" 
+		diskPersistent="false" 
+        diskSpoolBufferSizeMB="30"  
+        maxElementsOnDisk="10000"  
+        diskExpiryThreadIntervalSeconds="120"  
+        memoryStoreEvictionPolicy="LRU" />  
+	  
+	<cache name="dictionaryCache"  
+		maxElementsInMemory="1000"  
+		maxElementsOnDisk="10000"  
+		eternal="false"  
+		overflowToDisk="false" 
+		diskPersistent="false" 
+		diskSpoolBufferSizeMB="20"  
+		timeToIdleSeconds="300000"  
+		timeToLiveSeconds="600000"  
+		memoryStoreEvictionPolicy="LFU"  />  
+	
+	<cache name="mainCache"  
+		maxElementsInMemory="1000"  
+		maxElementsOnDisk="10000"  
+		eternal="false"  
+		overflowToDisk="false" 
+		diskPersistent="false" 
+		diskSpoolBufferSizeMB="20"  
+		timeToIdleSeconds="300000"  
+		timeToLiveSeconds="600000"  
+		memoryStoreEvictionPolicy="LFU"  />  
+	
+	<cache name="articleCache"  
+		maxElementsInMemory="1000"  
+		maxElementsOnDisk="10000"  
+		eternal="false"  
+		overflowToDisk="false" 
+		diskPersistent="false" 
+		diskSpoolBufferSizeMB="20"  
+		timeToIdleSeconds="300000"  
+		timeToLiveSeconds="600000"  
+		memoryStoreEvictionPolicy="LFU"  />  
+
+</ehcache>

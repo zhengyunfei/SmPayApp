@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+[#import "pagination.ftl" as pag]
+<html>
+<head>
+    <title id="js-meta-title">收款记录</title>
+    [#include "common.html"]
+</head>
+<body class="theme theme--blue">
+<!-- ▼ Main header -->
+[#include "head.html"]
+<!--head end-->
+<div class="container">
+    <div class="app">
+        <div class="app-inner clearfix">
+            <div class="app-init-container">
+                <nav class="ui-nav clearfix">
+                    <ul class="pull-left">
+                        <li id="js-cashier-init">
+                            <a href="${base}/qrCode/index.html">收银台</a>
+                        </li>
+                        <li id="js-cashier-qrcode" class="active">
+                            <a href="${base}/qrCode/list.html" >二维码生成记录</a>
+                        </li>
+                        <li id="js-cashier-payment" class="">
+                            <a href="${base}/qrCode/cashier.html" class="active">收款记录</a>
+                        </li>
+                    </ul>
+                </nav>
+                <div class="app__content js-app-main page-cashier">
+                    <div class="widget-list">
+                        <div class="js-list-filter-region clearfix ui-box" style="position: relative;">
+                            <div class="widget-list-filter"></div>
+                        </div>
+                    <div class="ui-box">
+                        <table class="ui-table ui-table-list" style="padding: 0px;">
+                            <thead class="js-list-header-region tableFloatingHeaderOriginal" style="position: static; top: 0px; margin-top: 0px; left: 601.5px; z-index: 1; width: 850px;">
+                            <tr class="widget-list-header">
+                                <th class="cell-20" style="min-width: 171px; max-width: 171px;">商品名称</th>
+                                <th class="cell-15" style="min-width: 127px; max-width: 127px;">应付金额(元)</th>
+                                <th class="cell-30" style="min-width: 255px; max-width: 255px;">付款时间</th>
+                            </tr>
+                            </thead>
+                            <tbody class="js-list-body-region">
+                            [@portal_qrcodepay_list shopId="${(_shop_user_key.id)?default('')}" pageNo="${pageNo!'1'}"]
+                                [#if qrcodePayList?? &&qrcodePayList?size>0]
+                                [#list qrcodePayList as qrcodepay]
+                                    <tr class="widget-list-item">
+                                        <td>${qrcodepay.name!''}</td>
+                                        <td>${qrcodepay.money?if_exists?string.number}</td>
+                                        <td>${qrcodepay.createTime!''}</td>
+                                    </tr>
+                                [/#list]
+                                [/#if]
+                            [/@portal_qrcodepay_list]
+                           </tbody>
+                        </table>
+                        <div class="js-list-empty-region"></div>
+                    </div>
+                        <!-------------分页start---------------------------->
+                        <div class="js-list-footer-region ui-box">
+                            <div class="widget-list-footer">
+                                <input id="pageNo" name="pageNo" type="hidden" value="${pageNo!'1'}">
+                                <div class="pagenavi">
+                                    [@pag.pagination pageNo=pageNo pageSize=pageSize recordCount=recordCount  toURL="${base}/qrCode/cashier.html"/]
+                                    <span class="total">共 ${recordCount!''} 条，每页 ${pageSize!''} 条</span>
+                                </div>
+                            </div>
+                        </div>
+                        <!-------------分页end------------------------------>
+                </div></div>
+            </div>
+            <div class="notify-bar js-notify animated hinge hide">
+            </div>
+        </div>
+    </div>
+   [#include "foot.html"]
+</div>
+</body>
+</html>

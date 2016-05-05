@@ -1,0 +1,281 @@
+.page-cashier .cashier-desk {
+    width: 100%;
+    height: 270px;
+    background: #f8f8f8;
+    border: 1px solid #e5e5e5;
+    overflow: hidden
+}
+
+.page-cashier .cashier-realtime {
+    margin: 20px auto 0;
+    background: #fff;
+    overflow: hidden
+}
+
+.page-cashier .pay-code-img img {
+    width: 80px;
+    height: 80px
+}
+
+.page-cashier tbody tr {
+    height: 60px
+}
+
+.page-cashier .list-tools p {
+    line-height: 24px
+}
+
+.page-cashier .form-horizontal {
+    margin: 0;
+    padding: 0
+}
+
+.page-cashier .form-horizontal .controls {
+    margin-left: 0
+}
+
+.page-cashier .realtime-list-box {
+    min-height: 120px
+}
+
+.page-cashier .realtime-list-box .ui-box {
+    background: #fff
+}
+
+.cashier-reduce-info {
+    color: #999
+}
+
+.cashier-reduce-info .status {
+    display: inline-block;
+    margin-right: 5px;
+    border-radius: 50%;
+    width: 16px;
+    height: 16px;
+    line-height: 16px;
+    font-size: 12px;
+    font-weight: bold;
+    color: #fff;
+    background: #f4c600
+}
+
+.cashier-reduce-info .status--done {
+    background: #ec503a
+}
+
+.cashier-desk .pay-title {
+    font-size: 14px;
+    line-height: 40px;
+    font-weight: bold
+}
+
+.cashier-desk .tips {
+    line-height: 24px
+}
+
+.cashier-desk .realtime-pay {
+    float: left;
+    padding: 20px 0 0 30px;
+    position: relative
+}
+
+.cashier-desk .realtime-pay .pay-title {
+    line-height: 50px
+}
+
+.cashier-desk .realtime-pay .pay-config {
+    float: left
+}
+
+.cashier-desk .realtime-pay .pay-config input {
+    height: 30px
+}
+
+.cashier-desk .realtime-pay .pay-config .config-title input {
+    width: 260px
+}
+
+.cashier-desk .realtime-pay .pay-config .controls {
+    position: relative
+}
+
+.cashier-desk .realtime-pay .pay-config .config-amount input {
+    width: 140px;
+    margin: 0;
+    vertical-align: middle
+}
+
+.cashier-desk .realtime-pay .pay-config .config-amount .btn-primary {
+    height: 28px;
+    line-height: 28px;
+    margin-left: 10px;
+    width: 80px;
+    vertical-align: middle
+}
+
+.cashier-desk .realtime-pay .pay-config .clear-btn {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    width: 20px;
+    height: 20px;
+    cursor: pointer;
+    background: url("/v2/image/cancel@2x.png") no-repeat center center;
+    background-size: 15px
+}
+
+.cashier-desk .realtime-pay .pay-config .clear-value {
+    left: 126px
+}
+
+.cashier-desk .realtime-pay .pay-config .fixed-tips {
+    position: absolute;
+    left: 30px;
+    bottom: 0
+}
+
+.cashier-desk .realtime-pay .pay-code {
+    float: right;
+    margin-left: 50px;
+    padding: 0 20px;
+    text-align: center
+}
+
+.cashier-desk .realtime-pay .pay-code input {
+    margin-top: 0px
+}
+
+.cashier-desk .realtime-pay .pay-code .qr-code-zone {
+    position: relative;
+    width: 120px;
+    height: 120px;
+    line-height: 120px;
+    text-align: center;
+    margin: 10px auto;
+    border: 1px dashed #797979
+}
+
+.cashier-desk .realtime-pay .pay-code .qr-code-zone img {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 120px;
+    height: 120px
+}
+
+.cashier-desk .self-pay {
+    width: 300px;
+    margin: 10px 0 20px;
+    text-align: center;
+    float: right;
+    border-left: 1px solid #e5e5e5
+}
+
+.cashier-desk .self-pay .self-pay-code {
+    width: 120px;
+    height: 120px;
+    margin: 5px auto 12px
+}
+
+.cashier-desk .self-pay .self-pay-code img {
+    width: 120px;
+    height: 120px
+}
+
+.cashier-realtime .realtime-title {
+    float: left;
+    font-size: 14px;
+    font-weight: bold
+}
+
+.cashier-realtime .realtime-title-block {
+    line-height: 40px;
+    border-bottom: 1px solid #e5e5e5
+}
+
+.cashier-realtime .realtime-title-block a {
+    display: inline-block;
+    padding: 0 10px
+}
+
+.cashier-realtime .realtime-title-block .refresh-list {
+    float: right
+}
+
+.ui-table th,.ui-table td {
+    text-align: center;
+    vertical-align: middle
+}
+
+.ui-table th.text-left,.ui-table td.text-left {
+    text-align: left
+}
+
+.split-blue {
+    font-size: 14px;
+    margin: 0 5px;
+    color: #07d
+}
+
+.ui-popover--confirm .inner__header .text-center {
+    text-align: left
+}
+
+.ui-popover--confirm .inner__content {
+    background: #fff;
+    padding-bottom: 0;
+    padding-left: 0
+}
+
+.cashier-reduce .ui-table tr {
+    height: auto
+}
+
+.cashier-reduce .ui-table .ui-message-help {
+    padding-left: 0
+}
+
+.cashier-reduce .opts {
+    margin-bottom: 20px
+}
+
+.cashier-reduce .pagenavi {
+    margin-top: 20px
+}
+
+.cashier-reduce-detail {
+    position: relative
+}
+
+.cashier-reduce-detail h3 {
+    margin: 25px 0;
+    font-size: 18px;
+    font-weight: bold
+}
+
+.cashier-reduce-detail .form-control {
+    padding-left: 10px;
+    width: 60px
+}
+
+.cashier-reduce-detail .error-info {
+    position: absolute;
+    bottom: 50px;
+    color: #f60
+}
+
+.cashier-reduce-detail .opts-wrapper {
+    margin-top: 40px;
+    height: 40px;
+    line-height: 40px;
+    background: #ffffcc
+}
+
+.cashier-reduce-detail .opts-wrapper .opts {
+    margin: 0 auto;
+    width: 160px
+}
+
+.cashier-reduce-detail .opts-wrapper .opts .ui-btn {
+    margin-right: 20px
+}

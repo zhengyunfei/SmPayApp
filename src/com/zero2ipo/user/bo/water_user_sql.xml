@@ -1,0 +1,108 @@
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
+		 "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap namespace="mobile.User">
+	<typeAlias alias="UserBo" type="com.zero2ipo.user.bo.UserBo"/>
+	<resultMap class="UserBo" id="UserMap">
+		<result property="id" column="id"/>
+		<result property="empNo" column="empNo"/>
+		<result property="jiFen" column="jiFen"/>
+		<result property="mobile" column="mobile"/>
+		<result property="createTime" column="createTime"/>
+		<result property="rank" column="rank"/>
+		<result property="lastLoginTime" column="lastLoginTime"/>
+		<result property="loginNum" column="loginNum"/>
+	</resultMap>
+	<!--查询-->
+
+	<select id='findUserList' resultMap='UserMap'>
+		SELECT
+			id,
+			empNo,
+			jiFen,
+			mobile,
+			createTime,
+			rank,
+			lastLoginTime,
+			loginNum
+		FROM cfj_User
+		<dynamic prepend="WHERE">
+			<isNotEmpty prepend="AND" property="mobile">
+				mobile=#mobile#
+			</isNotEmpty>
+		</dynamic>
+	</select>
+
+	<select id='findUserById' resultClass='UserBo'>
+		SELECT
+			id,
+			empNo,
+			jiFen,
+			mobile,
+			createTime,
+			rank,
+			lastLoginTime,
+			loginNum
+		FROM
+			cfj_User
+		WHERE
+			id=#id#
+	</select>
+
+	<!--新增-->
+	<insert id="addUser" parameterClass="UserBo">
+		INSERT INTO cfj_User(
+			empNo,
+			jiFen,
+			mobile,
+			createTime,
+			rank,
+			loginNum,
+			lastLoginTime
+		)VALUES(
+			#empNo#,
+			#jiFen#,
+			#mobile#,
+			now(),
+			0,
+			1,
+			now()
+		)
+		<selectKey resultClass="long" keyProperty="id" >
+			SELECT @@IDENTITY AS id
+		</selectKey>
+	</insert>
+	<!--修改-->
+	<update id="updUser" parameterClass="UserBo">
+		UPDATE
+		cfj_User
+		<dynamic prepend="SET">
+			<isNotEmpty prepend="," property="jiFen">
+				jiFen=#jiFen#
+			</isNotEmpty>
+			<isNotEmpty prepend="," property="mobile">
+				mobile=#mobile#
+			</isNotEmpty>
+			<isNotEmpty prepend="," property="rank">
+				rank=#rank#
+			</isNotEmpty>
+			<isNotEmpty prepend="," property="lastLoginTime">
+				lastLoginTime=now()
+			</isNotEmpty>
+			<isNotEmpty prepend="," property="loginNum">
+				loginNum=#loginNum#
+			</isNotEmpty>
+		</dynamic>
+		WHERE
+		id=#id#
+	</update>
+	<!--删除-->
+	<delete id="delUser" parameterClass="java.util.Map">
+		DELETE FROM
+		cfj_User
+		WHERE
+		UserId IN
+		<iterate property="id" conjunction="," close=")" open="(">
+			#id[]#
+		</iterate>
+	</delete>
+</sqlMap>

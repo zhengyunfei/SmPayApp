@@ -1,0 +1,126 @@
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
+		"http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap namespace="mobile.ShopPay">
+	<typeAlias alias="ShopPay" type="com.zero2ipo.qrcodePay.bo.QrcodePayBo"/>
+	<resultMap class="ShopPay" id="ShopPayMap">
+		<result property="id" column="id"/>
+		<result property="name" column="name"/>
+		<result property="createTime" column="createTime"/>
+		<result property="payTime" column="payTime"/>
+		<result property="openId" column="openId"/>
+		<result property="money" column="money"/>
+		<result property="shopId" column="shopId"/>
+		<result property="outTradeNo" column="outTradeNo"/>
+	</resultMap>
+
+	<select id='findShopPayList' resultMap='ShopPayMap'>
+		SELECT
+		id,
+		name,
+		createTime,
+		payTime,
+		openId,
+		money,
+		shopId,
+		outTradeNo
+		FROM shop_pay_list
+		<dynamic prepend="WHERE">
+			<isNotEmpty prepend="AND" property="name">
+				name=#name#
+			</isNotEmpty>
+			<isNotEmpty prepend="AND" property="money">
+				money =#money#
+			</isNotEmpty>
+			<isNotEmpty prepend="AND" property="shopId">
+				shopId =#shopId#
+			</isNotEmpty>
+		</dynamic>
+		order by createTime desc
+		limit #start#,#end#
+	</select>
+	<select id='findShopPayById' resultMap='ShopPayMap'>
+		SELECT
+		id,
+		name,
+		createTime,
+		payTime,
+		openId,
+		money,
+		shopId,
+		outTradeNo
+		FROM shop_pay_list
+		WHERE
+		outTradeNo=#outTradeNo#
+	</select>
+	<select id='findShopPayByMap' resultMap='ShopPayMap'>
+		SELECT
+			id,
+			name,
+			createTime,
+			payTime,
+			openId,
+			money,
+			shopId,
+			outTradeNo
+		FROM
+			shop_pay_list
+		WHERE
+			name=#name#
+		and
+		money=#money#
+	</select>
+	<select id='findShopPayListCount' resultClass='java.lang.Integer'>
+		SELECT
+		count(0)
+		FROM shop_pay_list
+		<dynamic prepend="WHERE">
+			<isNotEmpty prepend="AND" property="name">
+				name=#name#
+			</isNotEmpty>
+			<isNotEmpty prepend="AND" property="money">
+				money =#money#
+			</isNotEmpty>
+			<isNotEmpty prepend="AND" property="shopId">
+				shopId =#shopId#
+			</isNotEmpty>
+		</dynamic>
+	</select>
+	<insert id="addShopPay" parameterClass="ShopPay">
+		INSERT INTO shop_pay_list(
+		name,
+		createTime,
+		openId,
+		money,
+		shopId,
+		outTradeNo
+		)VALUES(
+		#name#,
+		now(),
+		#openId#,
+		#money#,
+		#shopId#,
+		#outTradeNo#
+		)
+	</insert>
+	<update id="updShopPay" parameterClass="ShopPay">
+		update
+			shop_pay_list
+		set
+			 payTime=#payTime#,
+			 bankType=#bankType#,
+			 totalFee=#totalFee#,
+			 transactionId=#transactionId#
+		where
+			outTradeNo=#outTradeNo#
+	</update>
+
+	<delete id="deleteShopPayByIds" parameterClass="java.util.Map">
+		DELETE FROM
+			shop_pay_list
+		WHERE
+		ID IN
+		<iterate property="id" conjunction="," close=")" open="(">
+			#id[]#
+		</iterate>
+	</delete>
+</sqlMap>

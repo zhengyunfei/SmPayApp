@@ -1,0 +1,250 @@
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
+    "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap namespace="mobile.Admin">
+
+	<!-- 系统用户信息实体类(User) -->
+	<typeAlias alias="user" type="com.zero2ipo.admin.entity.AdminBo"/>
+
+	<!-- 系统用户信息实体映射集合 -->
+	<resultMap id="userList" class="user">
+		<result property="userId" column="USER_ID"/>
+		<result property="userNo" column="USER_NO"/>
+		<result property="userName" column="USER_NAME"/>
+		<result property="userRealName" column="USER_REAL_NAME"/>
+		<result property="userPwd" column="USER_PWD"/>
+		<result property="curStatusCode" column="CUR_STATUS_CODE"/>
+		<result property="gender" column="GENDER"/>
+		<result property="position" column="POSITION"/>
+		<result property="tel" column="TEL"/>
+		<result property="mobile" column="MOBILE"/>
+		<result property="email" column="EMAIL"/>
+		<result property="ip" column="IP"/>
+		<result property="addDate" column="ADD_DATE"/>
+		<result property="addUser" column="ADD_USER"/>
+		<result property="expHintDate" column="EXP_HINT_DATE"/>
+		<result property="remark" column="REMARK"/>
+	</resultMap>
+
+	<!-- 系统用户列表信息查询 -->
+	<select id="findUserInfoList" resultMap="userList">
+		 SELECT U.USER_ID,
+		      U.USER_NO,
+		      U.USER_NAME,
+		      U.USER_REAL_NAME,
+		      U.USER_PWD,
+		      U.CUR_STATUS_CODE,
+		      U.GENDER,
+		      U.POSITION,
+		      U.TEL,
+		      U.MOBILE,
+		      U.EMAIL,
+		      U.IP,
+		      U.ADD_DATE,
+		      U.ADD_USER,
+		      U.EXP_HINT_DATE,
+		      U.REMARK
+		 FROM
+		 	S9_SYS_USER U
+		 <dynamic prepend="WHERE">
+			<isNotEmpty prepend="AND" property="userNo">
+			    INSTR(U.USER_NO,#userNo#)>0
+			</isNotEmpty>
+			<isNotEmpty prepend="AND" property="userName">
+			    INSTR(U.USER_NAME,#userName#)>0
+			</isNotEmpty>
+		</dynamic>
+	</select>
+
+		<select id="findUserList" resultMap="userList">
+		 SELECT U.USER_ID,
+		      U.USER_NO,
+		      U.USER_NAME,
+		      U.USER_REAL_NAME,
+		      U.USER_PWD,
+		      U.CUR_STATUS_CODE,
+		      U.GENDER,
+		      U.POSITION,
+		      U.TEL,
+		      U.MOBILE,
+		      U.EMAIL,
+		      U.IP,
+		      U.ADD_DATE,
+		      U.ADD_USER,
+		      U.EXP_HINT_DATE,
+		      U.REMARK
+		 FROM
+		 	S9_SYS_USER U
+	</select>
+
+	<!-- 根据用户标识查询系统用户信息 -->
+	<select id="findUserById" resultMap="userList">
+		 SELECT U.USER_ID,
+		      U.USER_NO,
+		      U.USER_NAME,
+		      U.USER_REAL_NAME,
+		      U.USER_PWD,
+		      U.CUR_STATUS_CODE,
+		      U.GENDER,
+		      U.POSITION,
+		      U.TEL,
+		      U.MOBILE,
+		      U.EMAIL,
+		      U.IP,
+		      U.ADD_DATE,
+		      U.ADD_USER,
+		      U.EXP_HINT_DATE,
+		      U.REMARK
+		 FROM
+		 	S9_SYS_USER U
+		WHERE
+		     U.USER_ID = #userId#
+	</select>
+
+	<!-- 用户信息列表    总条数查询 -->
+    <select id="findAdminByEmpNo" resultClass="java.lang.Integer">
+	   SELECT
+		   	COUNT(0)
+		 FROM
+		 	S9_SYS_USER U
+		 <dynamic prepend="WHERE">
+			<isNotEmpty prepend="AND" property="userNo">
+			    U.USER_NO=#userNo#
+			</isNotEmpty>
+			<isNotEmpty prepend="AND" property="userName">
+			    INSTR(U.USER_NAME,#userName#)>0
+			</isNotEmpty>
+		</dynamic>
+  	</select>
+
+  	<!-- 用户信息    新增 -->
+	<insert id="addUser" parameterClass="user">
+		INSERT INTO S9_SYS_USER
+		  (USER_ID,
+		   USER_NO,
+		   USER_NAME,
+		   USER_REAL_NAME,
+		   USER_PWD,
+		   CUR_STATUS_CODE,
+		   GENDER,
+		   POSITION,
+		   TEL,
+		   MOBILE,
+		   EMAIL,
+		   IP,
+		   ADD_DATE,
+		   ADD_USER,
+		   EXP_HINT_DATE,
+		   REMARK)
+		VALUES
+		  (#userId#,
+		   #userNo#,
+		   #userName#,
+		   #userRealName#,
+		   #userPwd#,
+		   #curStatusCode#,
+		   #gender#,
+		   #position#,
+		   #tel#,
+		   #mobile#,
+		   #email#,
+		   #ip#,
+		   #addDate#,
+		   #addUser#,
+		   #expHintDate#,
+		   #remark#)
+	</insert>
+
+	<!-- 用户信息	修改 -->
+	<update id="upSysOper" parameterClass="user">
+	 	UPDATE
+		    S9_SYS_USER
+		  SET
+			USER_NO=#userNo#,
+			USER_NAME=#userName#,
+			USER_REAL_NAME=#userRealName#,
+			<isNotNull prepend="" property="userPwd">
+				USER_PWD=#userPwd#,
+			</isNotNull>
+			CUR_STATUS_CODE=#curStatusCode#,
+			GENDER=#gender#,
+			POSITION=#position#,
+			TEL=#tel#,
+			MOBILE=#mobile#,
+			EMAIL=#email#,
+			REMARK=#remark#
+		 WHERE
+			USER_ID = #userId#
+	</update>
+
+	<!-- 用户信息	删除 -->
+	<delete id="delSysOper" parameterClass="java.util.Map">
+		DELETE FROM
+				S9_SYS_USER
+			WHERE
+				USER_ID IN
+				<iterate property="userId" conjunction="," close=")" open="(">
+					#userId[]#
+				</iterate>
+	</delete>
+
+	<!-- 用户信息	启用 -->
+	<update id="updUserEnStatus" parameterClass="java.util.Map">
+		UPDATE
+		    	S9_SYS_USER
+		    SET
+		  		CUR_STATUS_CODE = '01'
+			WHERE
+			    CUR_STATUS_CODE = '02'
+				AND USER_ID IN
+				<iterate property="userId" conjunction="," close=")" open="(">
+					#userId[]#
+				</iterate>
+	</update>
+
+	<!-- 用户信息	停用 -->
+	<update id="updUserDisStatus" parameterClass="java.util.Map">
+		UPDATE
+		    	S9_SYS_USER
+		    SET
+		  		CUR_STATUS_CODE = '02'
+			WHERE
+			    CUR_STATUS_CODE = '01'
+				AND USER_ID IN
+				<iterate property="userId" conjunction="," close=")" open="(">
+					#userId[]#
+				</iterate>
+	</update>
+
+	<!-- 添加用户角色 -->
+	<insert id="addUserRole">
+		INSERT INTO S9_SYS_USER_ROLE_RELA
+		(
+			USER_ROLE_REF_ID,
+			USER_ID,
+			ROLE_ID
+		)VALUES
+		(
+			#userRoleId#,
+			#userId#,
+			#roleId#
+		)
+	</insert>
+
+	<!-- 根据用户ID查询用户角色 -->
+	<select id="returnUserRole" resultClass="java.lang.String">
+		SELECT
+			ROLE_ID
+		FROM
+			S9_SYS_USER_ROLE_RELA
+		WHERE
+			USER_ID = #userId#
+	</select>
+
+	<!-- 删除用户角色 -->
+	<delete id="delUserRole">
+		DELETE FROM
+			S9_SYS_USER_ROLE_RELA
+		WHERE USER_ID = #userId#
+
+	</delete>
+</sqlMap>

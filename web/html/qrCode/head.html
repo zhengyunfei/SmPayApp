@@ -1,0 +1,31 @@
+<header class="ui-header">
+    <div class="ui-header-inner clearfix">
+        <nav class="ui-header-nav">
+            <ul class="clearfix">
+                <!--<li class="divide">|</li>-->
+                <li class="active">
+                    <a href="https://koudaitong.com/v2/ump/dashboard">应用和营销</a>
+                </li>
+                <!-- <li class="divide">|</li>-->
+            </ul>
+        </nav>
+        <div class="ui-header-user ">
+            <div class="customer-wrap">
+            </div>
+            <div class="dropdown hover dropdown-right">
+                <a href="javascript:;" class="dropdown-toggle" data-toggle="dropdown">
+                    <span class="txt">
+                        <span class="ellipsis team_name">${(_shop_user_key.name)?default('')}</span><span class="dash"> - </span>设置
+                    </span>
+                    <i class="caret"></i>
+                </a>
+                <ul class="dropdown-menu">
+                    <li><a href="${base}/shop/login.html">切换店铺</a></li>
+                    <li class="divide"></li>
+                    <li><span>${(_shop_user_key.mobile)?default('')}</span></li>
+                    <li><a href="${base}/shop/logout.html">退出</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</header>

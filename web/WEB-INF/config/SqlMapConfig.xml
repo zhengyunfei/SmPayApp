@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMapConfig
+  PUBLIC "-//ibatis.apache.org//DTD SQL Map Config 2.0//EN"
+  "http://ibatis.apache.org/dtd/sql-map-config-2.dtd">
+
+<sqlMapConfig>
+
+	<!-- ibatis配置 -->
+	<settings cacheModelsEnabled="true"
+		lazyLoadingEnabled="true"
+		enhancementEnabled="true"
+		errorTracingEnabled="true"
+		maxRequests="32"
+		maxSessions="10"
+		maxTransactions="5"
+		useStatementNamespaces="true" />
+	<!-- 手动配置ibatis的sql语句文件  -->
+	<sqlMap resource="com/zero2ipo/admin/entity/water_admin_sql.xml"></sqlMap>
+	<sqlMap resource="com/zero2ipo/shop/bo/water_shop_sql.xml"></sqlMap>
+	<sqlMap resource="com/zero2ipo/qrCode/bo/Shop_qrcode_sql.xml"></sqlMap>
+	<sqlMap resource="com/zero2ipo/qrcodePay/bo/water_qrcodePay_sql.xml"></sqlMap>
+</sqlMapConfig>
